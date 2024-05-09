@@ -1,0 +1,9 @@
+{
+  "postgres": {
+    "user": "postgres",
+    "host": "containers-us-west-105.railway.app",
+    "database": "railway",
+    "password": "wY5H3QSST3aZT4bbBKUG",
+    "port": 7222
+  }
+}
