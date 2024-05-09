@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { SqlConnectModule } from "./database/postgres-query/sql-connect.module";
@@ -23,11 +24,19 @@ import { AccountController } from "./api/account/account.controller";
 import { AccountService } from "./api/account/account.service";
 import { UserModule } from "./auth/user/user.module";
 import { JwtModule } from "@nestjs/jwt";
-import { ResultController } from './api/result/result.controller';
-import { ResultService } from './api/result/result.service';
+import { ResultController } from "./api/result/result.controller";
+import { ResultService } from "./api/result/result.service";
 
 @Module({
-  imports: [SqlConnectModule, AuthModule, UserModule, JwtModule],
+  imports: [
+    SqlConnectModule,
+    AuthModule,
+    UserModule,
+    JwtModule,
+    ConfigModule.forRoot({
+      envFilePath: ".env",
+    }),
+  ],
   controllers: [
     AppController,
     GroupCriteriaController,

@@ -17,4 +17,9 @@ export class AppController {
   login(@Req() req) {
     return this.authService.login(req.user);
   }
+
+  @Get("")
+  start(@Req() req) {
+    return "Success";
+  }
 }

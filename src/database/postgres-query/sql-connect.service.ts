@@ -10,14 +10,18 @@ import { SQLResult } from "src/interfaces/sql/sql-result";
 export class SqlConnectService {
   constructor(private readonly pgConfig: PostgresConfig) {}
 
+  optionConnect = process.env.POSTGRES_URL
+    ? { connectionString: process.env.POSTGRES_URL }
+    : {
+        host: this.pgConfig.postgres.host,
+        database: this.pgConfig.postgres.database,
+        user: this.pgConfig.postgres.user,
+        password: this.pgConfig.postgres.password,
+        port: this.pgConfig.postgres.port,
+      };
+
   public query(text: string, params?: Array<unknown>) {
-    const pool = new Pool({
-      host: this.pgConfig.postgres.host,
-      database: this.pgConfig.postgres.database,
-      user: this.pgConfig.postgres.user,
-      password: this.pgConfig.postgres.password,
-      port: this.pgConfig.postgres.port,
-    });
+    const pool = new Pool(this.optionConnect);
     return from(pool.query(text, params)).pipe(
       map((res) => {
         pool.end();
@@ -26,13 +30,7 @@ export class SqlConnectService {
     );
   }
   public async queryLogin(text: string, params?: Array<unknown>) {
-    const pool = new Pool({
-      host: this.pgConfig.postgres.host,
-      database: this.pgConfig.postgres.database,
-      user: this.pgConfig.postgres.user,
-      password: this.pgConfig.postgres.password,
-      port: this.pgConfig.postgres.port,
-    });
+    const pool = new Pool(this.optionConnect);
     const res = await pool.query(text, params);
     pool.end();
     return res;
